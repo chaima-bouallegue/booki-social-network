@@ -50,6 +50,7 @@ jobs:
       - name: Run unit tests
         run: |
           cd book-network
+          echo "Skipping unit tests for now"
           mvn test
 
   build:
