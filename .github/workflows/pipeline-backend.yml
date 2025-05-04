@@ -26,6 +26,9 @@ jobs:
           distribution: 'corretto'
           java-version: '17'
 
+      - name: Give mvnw execute permission
+        run: chmod +x ./mvnw  # Ajoute les permissions d'exécution sur mvnw
+
       - name: Compile project
         run: |
           cd book-network
