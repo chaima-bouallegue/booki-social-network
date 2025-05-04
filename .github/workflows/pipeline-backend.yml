@@ -26,13 +26,10 @@ jobs:
           distribution: 'corretto'
           java-version: '17'
 
-      - name: Give mvnw execute permission
-        run: chmod +x ./mvnw  # Ajoute les permissions d'exécution sur mvnw
-
       - name: Compile project
         run: |
           cd book-network
-          ./mvnw clean compile
+          mvn clean compile
 
   unit-tests:
     runs-on: ubuntu-latest
@@ -53,7 +50,7 @@ jobs:
       - name: Run unit tests
         run: |
           cd book-network
-          ./mvnw test
+          mvn test
 
   build:
     runs-on: ubuntu-latest
@@ -74,7 +71,7 @@ jobs:
       - name: Build project with Maven
         run: |
           cd book-network
-          ./mvnw clean package -DskipTests
+          mvn clean package -DskipTests
 
   build-image:
     runs-on: ubuntu-latest
@@ -99,7 +96,7 @@ jobs:
         id: extract_version
         run: |
           cd book-network
-          VERSION=$(./mvnw -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
+          VERSION=$(mvn -q -Dexec.executable="echo" -Dexec.args='${project.version}' --non-recursive exec:exec)
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Build and push Docker image
