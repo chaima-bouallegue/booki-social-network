@@ -1,0 +1,171 @@
+/* Container principal */
+.books-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* En-tête */
+.header-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-title {
+  color: #2c3e50;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.page-title i {
+  color: #3498db;
+}
+
+/* Alertes */
+.alert-custom {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  margin: 0;
+}
+
+.alert-error {
+  background-color: #fdecea;
+  color: #d32f2f;
+  border-left: 4px solid #d32f2f;
+}
+
+.alert-success {
+  background-color: #edf7ed;
+  color: #2e7d32;
+  border-left: 4px solid #2e7d32;
+}
+
+.alert-custom i {
+  font-size: 1.2rem;
+}
+
+.alert-custom .btn-close {
+  margin-left: auto;
+  font-size: 0.75rem;
+}
+
+/* Séparateur */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(52,152,219,0.1) 0%, rgba(52,152,219,0.5) 50%, rgba(52,152,219,0.1) 100%);
+  margin: 1.5rem 0;
+}
+
+/* Grille de livres */
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+/* Aucun livre trouvé */
+.no-books {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem;
+  text-align: center;
+  color: #7f8c8d;
+}
+
+.no-books i {
+  font-size: 3rem;
+  opacity: 0.5;
+}
+
+.no-books p {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+/* Pagination */
+.pagination-container {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination {
+  gap: 0.5rem;
+}
+
+.page-item .page-link {
+  color: #2c3e50;
+  border-radius: 6px !important;
+  border: 1px solid #e0e0e0;
+  padding: 0.5rem 0.9rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-item .page-link:hover {
+  background-color: #f8f9fa;
+  color: #3498db;
+  border-color: #3498db;
+}
+
+.page-item .page-link.active {
+  background-color: #3498db;
+  color: white;
+  border-color: #3498db;
+}
+
+.page-item .page-link.disabled {
+  color: #95a5a6;
+  pointer-events: none;
+  background-color: #f8f9fa;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .books-container {
+    padding: 1.5rem;
+  }
+
+  .books-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .books-container {
+    padding: 1rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .alert-custom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .alert-custom .btn-close {
+    align-self: flex-end;
+  }
+}
