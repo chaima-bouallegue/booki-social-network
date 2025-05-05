@@ -1,4 +1,4 @@
-name: Build and Deploy Frontend Image
+name: BSN Frontend Pipeline
 
 on:
   push:
@@ -6,10 +6,12 @@ on:
       - ci/pipeline
     paths:
       - 'book-network-ui/**'
+      - 'docker/frontend/**'
+      - 'docker-compose.yml'
       - '.github/workflows/*-frontend.yml'
 
 jobs:
-  build:
+  build-image:
     runs-on: ubuntu-latest
     name: Build Frontend Docker Image
     steps:
@@ -30,15 +32,19 @@ jobs:
         with:
           node-version: '18.20.4'
 
-      - name: Build frontend
+      - name: Install dependencies and build
         run: |
           cd book-network-ui
           npm install
           npm run api-gen
           npm run build -- --configuration production
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Extract project version
+        id: extract_version_node
+        run: |
+          cd book-network-ui
+          VERSION=$(node -p "require('./package.json').version || '1.0.0'")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Log in to DockerHub
         uses: docker/login-action@v3
@@ -46,20 +52,13 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: Extract project version
-        id: extract_version
-        run: |
-          cd book-network-ui
-          VERSION=$(node -p "require('./package.json').version || '1.0.0'")
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: book-network-ui
-          file: book-network-ui/Dockerfile
+          file: docker/frontend/Dockerfile
           push: true
           platforms: linux/amd64
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/bsn-ui:${{ steps.extract_version.outputs.version }}
+            ${{ secrets.DOCKER_USERNAME }}/bsn-ui:${{ steps.extract_version_node.outputs.version }}
             ${{ secrets.DOCKER_USERNAME }}/bsn-ui:latest
