@@ -17,7 +17,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          submodules: recursive  # Si book-network-ui est un sous-module
+          # submodules: recursive  # Commenté car book-network-ui n'est plus un sous-module
+
+      - name: Debug directory structure
+        run: |
+          ls -R
+          pwd
+          find . -name package.json
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -51,7 +57,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: book-network-ui
-          file: book-network-ui/Dockerfile  # Ajuste si le Dockerfile est ailleurs
+          file: book-network-ui/Dockerfile
           push: true
           platforms: linux/amd64
           tags: |
