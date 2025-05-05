@@ -20,12 +20,30 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Debug directory structure
+        run: |
+          ls -R
+          pwd
+          find . -name package.json
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.20.4'
+
+      - name: Install dependencies and build
+        working-directory: book-network-ui
+        run: |
+          npm install
+          npm run api-gen
+          npm run build -- --configuration production
+
       - name: Extract project version
         id: extract_version
+        working-directory: book-network-ui
         run: |
-          VERSION=$(jq -r '.version' book-network-ui/package.json)
-          echo "VERSION=$VERSION"
-          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          VERSION=$(jq -r '.version' package.json || echo '1.0.0')
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
@@ -42,4 +60,4 @@ jobs:
           platforms: linux/amd64
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/bsn-ui:latest
-            ${{ secrets.DOCKER_USERNAME }}/bsn-ui:${{ steps.extract_version.outputs.VERSION }}
+            ${{ secrets.DOCKER_USERNAME }}/bsn-ui:${{ steps.extract_version.outputs.version }}
